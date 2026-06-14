@@ -7,20 +7,16 @@ import time
 from tensorflow.keras import layers, models
 from PIL import Image, ImageDraw, ImageFont
 
-# --- CONFIG HALAMAN ---
 st.set_page_config(page_title="KEMOVA - AI Emotion Detection", page_icon="🔮", layout="wide")
 
-# --- INISIALISASI SESSION STATE UNTUK TEMA ---
 if "dark_mode" not in st.session_state:
     st.session_state["dark_mode"] = False
     
 if "emotion_counts" not in st.session_state:
     st.session_state["emotion_counts"] = {e: 0 for e in ['Marah', 'Jijik', 'Takut', 'Bahagia', 'Sedih', 'Terkejut', 'Netral']}
 
-# --- GAYA KUSTOM BARU (Earthy & Elegant Palette dengan Dukungan Dark Mode) ───
 def load_custom_style():
     if st.session_state["dark_mode"]:
-        # Palet Dark Mode (Elegant Night)
         bg_main = "#1E1A1A"
         bg_section = "#2D2426"
         text_dark = "#EAE3E3"
@@ -30,7 +26,6 @@ def load_custom_style():
         status_box_bg = "#231B1C" 
         status_box_border = "transparent"
     else:
-        # Palet Light Mode (Earthy & Elegant)
         bg_main = "#F6EFE8"
         bg_section = "#EFE2D6"
         text_dark = "#3D2F2F"
@@ -45,7 +40,6 @@ def load_custom_style():
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght=400;500;600;700&family=Manrope:wght=300;400;500;600&display=swap');
 
-        /* ── VARIABLE WARNA DASAR ── */
         :root {{
             --amaranth: #933B5B;
             --thulian-pink: #B5728A;
@@ -59,7 +53,6 @@ def load_custom_style():
             --border-soft: {border_soft};
         }}
 
-        /* ── CANVAS UTAMA ── */
         html, body, .stApp {{
             background-color: var(--bg-main) !important;
             color: var(--text-dark) !important;
@@ -67,13 +60,11 @@ def load_custom_style():
             transition: background-color 0.3s ease, color 0.3s ease;
         }}
 
-        /* Container Layout */
         section.main .block-container {{
             padding: 3rem 4rem 4rem !important;
             max-width: 1140px !important;
         }}
 
-        /* Typography Global Overrides */
         h1, h2, h3, h4 {{
             font-family: 'Cormorant Garamond', serif !important;
             font-weight: 700 !important;
@@ -88,19 +79,16 @@ def load_custom_style():
         h3 {{ font-size: 2.2rem !important; color: var(--text-dark) !important;}}
         p, span, label {{ font-family: 'Manrope', sans-serif !important; color: var(--text-light) !important; }}
 
-        /* ── SIDEBAR NAVIGASI & LOCK BOTTOM FIX ── */
         section[data-testid='stSidebar'] {{
             background-color: var(--bg-section) !important;
             border-right: 1px solid var(--border-soft) !important;
             transition: background-color 0.3s ease;
         }}
         
-        /* Memaksa container utama di dalam sidebar menggunakan full height layout */
         section[data-testid='stSidebar'] > div:first-child {{
             padding: 2rem 1.2rem !important;
         }}
         
-        /* Mengunci posisi block atas dan bawah sidebar */
         section[data-testid='stSidebar'] .stElementContainer {{
             margin-bottom: 0px !important;
         }}
@@ -123,7 +111,6 @@ def load_custom_style():
             letter-spacing: 0.05em;
         }}
 
-        /* Tombol Menu Navigasi Sidebar */
         .stRadio > div {{
             gap: 0.5rem !important;
         }}
@@ -153,25 +140,22 @@ def load_custom_style():
             border-radius: 12px !important;
         }}
 
-        /* ── FIX KONTRAST TEKS HALAMAN ANALISIS PERFORMA (DARK MODE) ── */
-        /* Warna Label Metric */
         [data-testid="metric-container"] label p {{
             color: var(--text-light) !important;
         }}
-        /* Warna Nilai Angka/Teks Utama Metric */
+        
         [data-testid="metric-container"] div[data-testid="stMetricValue"] > div {{
             color: var(--amaranth) !important;
             font-family: 'Cormorant Garamond', serif !important;
             font-size: 2.2rem !important;
             font-weight: 700;
         }}
-        /* Kontras Teks Radio Button Pilihan Emosi di Main Page */
+        
         section.main div.stRadio label p {{
             color: var(--text-dark) !important;
             font-weight: 500 !important;
         }}
 
-        /* ── TOGGLE DARK MODE SIDEBAR AT BOTTOM ── */
         div.toggle-container {{
             display: flex;
             justify-content: space-between;
@@ -188,7 +172,6 @@ def load_custom_style():
             padding: 0 !important;
         }}
 
-        /* ── HERO CONTAINER ── */
         .exhibit-hero-card {{
             background: var(--bg-section);
             border-radius: 40px;
@@ -218,7 +201,6 @@ def load_custom_style():
             letter-spacing: 0.02em;
         }}
 
-        /* ── GLOBAL BUTTON DESIGNS ── */
         div.stButton > button {{
             width: 100% !important;
             background: transparent !important;
@@ -237,7 +219,6 @@ def load_custom_style():
             color: white !important;
         }}
 
-        /* ── EMOTION GRID ── */
         .emotion-grid {{
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -260,7 +241,6 @@ def load_custom_style():
         .emotion-grid-icon {{ font-size: 1.8rem; margin-bottom: 0.4rem; }}
         .emotion-grid-lbl {{ font-size: 0.85rem; font-weight: 600; color: var(--text-dark); }}
 
-        /* ── STANDAR CARDS ── */
         .glass-card {{
             background: var(--bg-section);
             border: 1px solid var(--border-soft);
@@ -284,7 +264,6 @@ def load_custom_style():
             visibility: hidden !important; 
         }}
 
-        /* ── BAGIAN PERBAIKAN TEKS UPLOAD GAMBAR ── */
         div[data-testid="stFileUploader"] section {{
             background-color: var(--bg-section) !important;
             border: 2px dashed var(--border-soft) !important;
@@ -301,7 +280,6 @@ def load_custom_style():
             visibility: hidden !important;
         }}
         
-        /* ── MOBILE RESPONSIVE ── */
         @media (max-width: 768px) {{
             section.main .block-container {{
                 padding: 1rem 1rem 2rem !important;
@@ -326,7 +304,6 @@ def load_custom_style():
     )
     return status_box_bg, status_box_border
 
-# --- ENGINE MODEL MACHINE LEARNING ---
 def build_local_model():
     model = models.Sequential([
         layers.Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=(48, 48, 1)),
@@ -373,10 +350,8 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 
 EMOTIONS = ['Marah', 'Jijik', 'Takut', 'Bahagia', 'Sedih', 'Terkejut', 'Netral']
 
-# Jalankan Desain Kustom Baru & Ambil Variabel Warna Box Dinamis
 status_box_bg, status_box_border = load_custom_style()
 
-# ── SIDEBAR NAVIGATION & LOWER CONTROL CONTAINER ──
 list_halaman = ["🏠     Beranda Utama", "🔮     Mulai Deteksi Ekspresi", "📊     Analisis Performa"]
 
 if "page" not in st.session_state:
@@ -400,7 +375,6 @@ with st.sidebar:
         output_logo = Image.new("RGBA", size, (0, 0, 0, 0))
         output_logo.paste(img_logo, (0, 0), mask=mask)
         
-        # Konversi ke base64 untuk ditampilkan di HTML center
         import io, base64
         buf = io.BytesIO()
         output_logo.save(buf, format="PNG")
@@ -420,7 +394,6 @@ with st.sidebar:
     st.session_state["page"] = page
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # Status & Dark Mode dikunci di bawah via sticky
     st.markdown(f"""
         <div style="position: sticky; bottom: 0; padding-top: 1rem;">
             <div style="padding: 1.2rem; border: 1px solid {status_box_border}; border-radius: 16px; background-color: {status_box_bg}; margin-bottom: 0.5rem;">
@@ -448,10 +421,7 @@ with st.sidebar:
             
     st.markdown("</div>", unsafe_allow_html=True)
 
-
-# ══════════════════════════════════════════
-# 🏠 BERANDA UTAMA (Halaman Utama)
-# ══════════════════════════════════════════
+# BERANDA UTAMA (Halaman Utama)
 if page == "🏠     Beranda Utama":
     with st.container():
         st.markdown("""
@@ -548,9 +518,7 @@ if page == "🏠     Beranda Utama":
             </div>
         """, unsafe_allow_html=True)
 
-# ══════════════════════════════════════════
-# 🔮 HALAMAN PREDIKSI
-# ══════════════════════════════════════════
+# HALAMAN PREDIKSI
 elif page == "🔮     Mulai Deteksi Ekspresi":
     st.markdown("""
         <h2>Kamera Penguji Ekspresi</h2>
@@ -630,7 +598,6 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
             pil_img = Image.fromarray(cv2.cvtColor(canvas_info, cv2.COLOR_BGR2RGB))
             draw = ImageDraw.Draw(pil_img)
 
-            # --- LOGIKA FONT ADAPTIF SERVER LINUX ---
             try:
                 font_title = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 20)
                 font_subtitle = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 16)
@@ -719,7 +686,6 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                 </div>
             """, unsafe_allow_html=True)
             
-            # ── MASUK KE LEVEL INDENTASI UTAMA (FULL-WIDTH DI BAWAH KEDUA GAMBAR) ──
             st.markdown("<br>", unsafe_allow_html=True)
             st.download_button(
                 label="📥 UNDUH LAPORAN HASIL DETEKSI (.JPG)",
@@ -742,9 +708,7 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                 </div>
             """, unsafe_allow_html=True)
 
-# ══════════════════════════════════════════
-# 📊 DASHBOARD STATISTIK
-# ══════════════════════════════════════════
+# DASHBOARD STATISTIK
 elif page == "📊     Analisis Performa":
     st.markdown("""
         <h2>Dashboard Performa & Evaluasi</h2>
@@ -762,7 +726,6 @@ elif page == "📊     Analisis Performa":
 
     st.markdown("<hr>", unsafe_allow_html=True)
     
-    # Grafik distribusi emosi terdeteksi
     emotion_df = pd.DataFrame({
         'Emosi': list(st.session_state['emotion_counts'].keys()),
         'Jumlah Terdeteksi': list(st.session_state['emotion_counts'].values())
