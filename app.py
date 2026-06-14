@@ -2,6 +2,7 @@ import streamlit as st
 import cv2
 import numpy as np
 import pandas as pd
+import plotly.express as px
 import time
 from tensorflow.keras import layers, models
 from PIL import Image, ImageDraw, ImageFont
