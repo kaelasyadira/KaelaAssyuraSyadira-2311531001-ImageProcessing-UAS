@@ -372,31 +372,26 @@ with st.sidebar:
     st.markdown("<div>", unsafe_allow_html=True)
     
     try:
-        st.markdown(
-            """
-            <div style="display: flex; justify-content: center; margin-bottom: -10px; margin-top: -10px;">
-                <div style="
-                    width: 120px; 
-                    height: 120px; 
-                    border-radius: 50%; 
-                    overflow: hidden; 
-                    border: 2px solid var(--amaranth);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: transparent;
-                ">
-                    st.image("logo_kemova.png", style="width: 100%; height: 100%; object-fit: cover;")
-                </div>
-            </div>
-            """, 
-            unsafe_allow_html=True
-        )
+        img_logo = Image.open("logo_kemova.png").convert("RGBA")
+        
+        size = (110, 110)
+        img_logo = img_logo.resize(size, Image.Resampling.LANCZOS)
+        
+        mask = Image.new("L", size, 0)
+        draw_mask = ImageDraw.Draw(mask)
+        draw_mask.ellipse((0, 0) + size, fill=255)
+        
+        output_logo = Image.new("RGBA", size, (0, 0, 0, 0))
+        output_logo.paste(img_logo, (0, 0), mask=mask)
+        
+        col_logo_space, col_logo_center, _ = st.columns([1, 4, 1])
+        with col_logo_center:
+            st.image(output_logo, use_container_width=True)
+            
     except:
-        # Cadangan jika render HTML static bermasalah di lokal, gunakan fungsi bawaan Streamlit
-        st.image("logo.png", width=120)
-    
-    st.markdown('<div class="sidebar-brand-name" style="margin-top: 15px;">KEMOVA</div>', unsafe_allow_html=True)
+        pass
+        
+    st.markdown('<div class="sidebar-brand-name" style="margin-top: 5px;">KEMOVA</div>', unsafe_allow_html=True)
 
     page = st.radio(
         "NAVIGASI",
