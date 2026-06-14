@@ -97,7 +97,7 @@ def load_custom_style():
         
         /* Memaksa container utama di dalam sidebar menggunakan full height layout */
         section[data-testid='stSidebar'] > div:first-child {{
-            padding: 2rem 1.2rem !important;
+            padding: 0.5rem 1.2rem !important;
         }}
         
         /* Mengunci posisi block atas dan bawah sidebar */
@@ -369,7 +369,7 @@ if "total_tests" not in st.session_state:
 index_halaman = list_halaman.index(st.session_state["page"])
 
 with st.sidebar:
-    st.markdown("<div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: -30px;'>", unsafe_allow_html=True)
     
     try:
         img_logo = Image.open("logo_kemova.png").convert("RGBA")
@@ -383,14 +383,14 @@ with st.sidebar:
         output_logo = Image.new("RGBA", size, (0, 0, 0, 0))
         output_logo.paste(img_logo, (0, 0), mask=mask)
         
-        st.markdown('<div style="display: flex; justify-content: center; margin-top: -15px; margin-bottom: -5px;">', unsafe_allow_html=True)
+        st.markdown('<div style="display: flex; justify-content: center; margin-top: -10px; margin-bottom: -15px;">', unsafe_allow_html=True)
         st.image(output_logo, width=105)
         st.markdown('</div>', unsafe_allow_html=True)
             
     except:
         pass
         
-    st.markdown('<div class="sidebar-brand-name" style="margin-top: -5px; margin-bottom: 1rem; padding-bottom: 0.5rem;">KEMOVA</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-brand-name" style="margin-top: -5px; margin-bottom: 0.8rem; padding-bottom: 0.3rem;">KEMOVA</div>', unsafe_allow_html=True)
 
     page = st.radio(
         "NAVIGASI",
@@ -401,23 +401,23 @@ with st.sidebar:
     st.session_state["page"] = page
     st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("<div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-bottom: -20px;'>", unsafe_allow_html=True)
     
     st.markdown(f"""
-        <div style="padding: 0.8rem 1rem; border: 1px solid {status_box_border}; border-radius: 12px; background-color: {status_box_bg}; margin-bottom: 0.25rem;">
-            <p style="font-size: 0.62rem; color: #A89A9A; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.2rem; margin-top: 0;">STATUS SISTEM</p>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <div style="width: 6px; height: 7px; border-radius: 50%; background: #933B5B; box-shadow: 0 0 6px #933B5B;"></div>
-                <span style="font-size: 0.85rem; color: {'#EAE3E3' if st.session_state['dark_mode'] else '#3D2F2F'}; font-weight: 600;">CNN Model Active</span>
+        <div style="padding: 0.6rem 0.8rem; border: 1px solid {status_box_border}; border-radius: 10px; background-color: {status_box_bg}; margin-bottom: 0.1rem;">
+            <p style="font-size: 0.6rem; color: #A89A9A; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.15rem; margin-top: 0;">STATUS SISTEM</p>
+            <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <div style="width: 6px; height: 6px; border-radius: 50%; background: #933B5B; box-shadow: 0 0 6px #933B5B;"></div>
+                <span style="font-size: 0.8rem; color: {'#EAE3E3' if st.session_state['dark_mode'] else '#3D2F2F'}; font-weight: 600;">CNN Model Active</span>
             </div>
         </div>
     """, unsafe_allow_html=True)
     
-    col_lbl, col_sw = st.columns([3, 1])
+    col_lbl, col_sw = st.columns([2.8, 1.2])
     with col_lbl:
         st.markdown("""
-            <div style="height: 100%; display: flex; align-items: center; padding-top: 0.3rem; padding-left: 0.3rem;">
-                <span style="font-size: 0.9rem; font-weight: 500; color: var(--text-dark);">🌙 &nbsp;Dark Mode</span>
+            <div style="height: 100%; display: flex; align-items: center; padding-top: 0.1rem; padding-left: 0.2rem;">
+                <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-dark);">🌙 &nbsp;Dark Mode</span>
             </div>
         """, unsafe_allow_html=True)
     with col_sw:
