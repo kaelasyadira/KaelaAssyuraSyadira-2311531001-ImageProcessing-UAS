@@ -300,6 +300,26 @@ def load_custom_style():
             display: none !important;
             visibility: hidden !important;
         }}
+        
+        /* ── MOBILE RESPONSIVE ── */
+        @media (max-width: 768px) {{
+            section.main .block-container {{
+                padding: 1rem 1rem 2rem !important;
+            }}
+            h1 {{ font-size: 2.5rem !important; }}
+            h2 {{ font-size: 2rem !important; }}
+            h3 {{ font-size: 1.6rem !important; }}
+            .exhibit-hero-card {{
+                padding: 25px 20px !important;
+                border-radius: 20px !important;
+            }}
+            .emotion-grid {{
+                grid-template-columns: repeat(3, 1fr) !important;
+            }}
+            .glass-card {{
+                padding: 1.2rem !important;
+            }}
+        }}
         </style>
         """,
         unsafe_allow_html=True,
