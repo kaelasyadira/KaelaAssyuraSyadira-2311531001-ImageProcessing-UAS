@@ -386,7 +386,7 @@ with st.sidebar:
                     justify-content: center;
                     background-color: transparent;
                 ">
-                    <img src="app/static/logo_kemova.png" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="logo_kemova.png" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
             </div>
             """, 
