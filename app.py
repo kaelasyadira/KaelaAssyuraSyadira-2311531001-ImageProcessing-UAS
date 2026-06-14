@@ -525,7 +525,7 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
     with col_input_center:
         input_option = st.radio(
             "Metode Input Gambar",
-            ["📸     Gunakan Live Webcam Kamera Stan", "🖼️     Upload Berkas Foto"],
+            ["📸     Gunakan Live Webcam Kamera", "🖼️     Upload Berkas Foto"],
             horizontal=True,
             label_visibility="collapsed"
         )
