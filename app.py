@@ -736,7 +736,15 @@ elif page == "📊     Analisis Performa":
         🎯 Distribusi Emosi yang Terdeteksi Selama Sesi</p>
     """, unsafe_allow_html=True)
 
-    st.bar_chart(data=emotion_df.set_index('Emosi'), color="#B5728A", height=200)
+    fig_dist = px.bar(
+        emotion_df, 
+        x='Emosi', 
+        y='Jumlah Terdeteksi', 
+        color_discrete_sequence=["#B5728A"],
+        height=280
+    )
+    fig_dist.update_layout(margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+    st.plotly_chart(fig_dist, use_container_width=True, config={'displayModeBar': False})
 
     st.markdown("<hr>", unsafe_allow_html=True)
 
@@ -797,7 +805,16 @@ elif page == "📊     Analisis Performa":
             label_visibility="collapsed"
         )
 
-        st.bar_chart(data=acc_data.set_index('Kelas Emosi'), color="#933B5B", height=300, horizontal=True)
+        fig_acc = px.bar(
+            acc_data, 
+            x='Akurasi (%)', 
+            y='Kelas Emosi', 
+            orientation='h',
+            color_discrete_sequence=["#933B5B"],
+            height=300
+        )
+        fig_acc.update_layout(margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+        st.plotly_chart(fig_acc, use_container_width=True, config={'displayModeBar': False})
 
     with col_note:
         info = analisis_emosi[selected_emotion]
