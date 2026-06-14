@@ -369,7 +369,6 @@ if "total_tests" not in st.session_state:
 index_halaman = list_halaman.index(st.session_state["page"])
 
 with st.sidebar:
-    with st.sidebar:
     st.markdown("<div>", unsafe_allow_html=True)
 
     try:
