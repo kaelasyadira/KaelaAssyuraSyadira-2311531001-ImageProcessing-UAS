@@ -106,10 +106,9 @@ def load_custom_style():
         }}
         
         section[data-testid='stSidebar'] div.stVerticalBlockInsidePage {{
-            height: calc(100vh - 3.5rem) !important;
             display: flex !important;
             flex-direction: column !important;
-            justify-content: space-between !important;
+            min-height: calc(100vh - 3.5rem) !important;
         }}
 
         .sidebar-brand-name {{
@@ -374,7 +373,7 @@ with st.sidebar:
     try:
         img_logo = Image.open("logo_kemova.png").convert("RGBA")
         
-        size = (110, 110)
+        size = (80, 80)
         img_logo = img_logo.resize(size, Image.Resampling.LANCZOS)
         
         mask = Image.new("L", size, 0)
@@ -384,7 +383,7 @@ with st.sidebar:
         output_logo = Image.new("RGBA", size, (0, 0, 0, 0))
         output_logo.paste(img_logo, (0, 0), mask=mask)
         
-        col_logo_space, col_logo_center, _ = st.columns([1, 4, 1])
+        col_logo_space, col_logo_center, _ = st.columns([1, 3, 1])
         with col_logo_center:
             st.image(output_logo, use_container_width=True)
             
@@ -400,12 +399,12 @@ with st.sidebar:
         label_visibility="collapsed"
     )
     st.session_state["page"] = page
+    for _ in range(8):
+        st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # --- CONTAINER BAWAH (Otomatis Terkunci di Paling Bawah) ---
     st.markdown("<div>", unsafe_allow_html=True)
     
-    # Box Status Sistem
     st.markdown(f"""
         <div style="padding: 1.2rem; border: 1px solid {status_box_border}; border-radius: 16px; background-color: {status_box_bg}; margin-bottom: 0.25rem;">
             <p style="font-size: 0.68rem; color: #A89A9A; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.4rem; margin-top: 0;">STATUS SISTEM</p>
