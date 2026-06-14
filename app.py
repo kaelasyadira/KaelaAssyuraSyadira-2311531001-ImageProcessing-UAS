@@ -372,8 +372,7 @@ with st.sidebar:
     
     try:
         img_logo = Image.open("logo_kemova.png").convert("RGBA")
-        
-        size = (80, 80)
+        size = (105, 105)
         img_logo = img_logo.resize(size, Image.Resampling.LANCZOS)
         
         mask = Image.new("L", size, 0)
@@ -383,14 +382,14 @@ with st.sidebar:
         output_logo = Image.new("RGBA", size, (0, 0, 0, 0))
         output_logo.paste(img_logo, (0, 0), mask=mask)
         
-        col_logo_space, col_logo_center, _ = st.columns([1, 3, 1])
-        with col_logo_center:
-            st.image(output_logo, use_container_width=True)
+        st.markdown('<div style="display: flex; justify-content: center; margin-top: -15px; margin-bottom: -5px;">', unsafe_allow_html=True)
+        st.image(output_logo, width=105)
+        st.markdown('</div>', unsafe_allow_html=True)
             
     except:
         pass
         
-    st.markdown('<div class="sidebar-brand-name" style="margin-top: 5px;">KEMOVA</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-brand-name" style="margin-top: -5px; margin-bottom: 1rem; padding-bottom: 0.5rem;">KEMOVA</div>', unsafe_allow_html=True)
 
     page = st.radio(
         "NAVIGASI",
