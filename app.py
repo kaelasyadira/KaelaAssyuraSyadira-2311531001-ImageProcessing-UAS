@@ -370,13 +370,33 @@ index_halaman = list_halaman.index(st.session_state["page"])
 
 with st.sidebar:
     st.markdown("<div>", unsafe_allow_html=True)
-
+    
     try:
-        st.image("logo_kemova.png", use_container_width=True)
+        st.markdown(
+            """
+            <div style="display: flex; justify-content: center; margin-bottom: -10px; margin-top: -10px;">
+                <div style="
+                    width: 120px; 
+                    height: 120px; 
+                    border-radius: 50%; 
+                    overflow: hidden; 
+                    border: 2px solid var(--amaranth);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: transparent;
+                ">
+                    <img src="app/static/logo.png" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+            """, 
+            unsafe_allow_html=True
+        )
     except:
-        pass
-
-    st.markdown('<div class="sidebar-brand-name">KEMOVA</div>', unsafe_allow_html=True)
+        # Cadangan jika render HTML static bermasalah di lokal, gunakan fungsi bawaan Streamlit
+        st.image("logo.png", width=120)
+    
+    st.markdown('<div class="sidebar-brand-name" style="margin-top: 15px;">KEMOVA</div>', unsafe_allow_html=True)
 
     page = st.radio(
         "NAVIGASI",
