@@ -374,18 +374,18 @@ with st.sidebar:
         img_logo = Image.open("logo_kemova.png").convert("RGBA")
         size = (105, 105)
         img_logo = img_logo.resize(size, Image.Resampling.LANCZOS)
-        
         mask = Image.new("L", size, 0)
         draw_mask = ImageDraw.Draw(mask)
         draw_mask.ellipse((0, 0) + size, fill=255)
-        
         output_logo = Image.new("RGBA", size, (0, 0, 0, 0))
         output_logo.paste(img_logo, (0, 0), mask=mask)
         
-        st.markdown('<div style="display: flex; justify-content: center; margin-top: -15px; margin-bottom: -5px;">', unsafe_allow_html=True)
-        st.image(output_logo, width=105)
-        st.markdown('</div>', unsafe_allow_html=True)
-            
+        # Konversi ke base64 untuk ditampilkan di HTML center
+        import io, base64
+        buf = io.BytesIO()
+        output_logo.save(buf, format="PNG")
+        b64 = base64.b64encode(buf.getvalue()).decode()
+        st.markdown(f'<div style="display:flex; justify-content:center; margin-bottom:0.5rem;"><img src="data:image/png;base64,{b64}" width="105" style="border-radius:50%;"></div>', unsafe_allow_html=True)
     except:
         pass
         
@@ -398,23 +398,21 @@ with st.sidebar:
         label_visibility="collapsed"
     )
     st.session_state["page"] = page
-    for _ in range(8):
-        st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("<div>", unsafe_allow_html=True)
-    
+    # Status & Dark Mode dikunci di bawah via sticky
     st.markdown(f"""
-        <div style="padding: 1.2rem; border: 1px solid {status_box_border}; border-radius: 16px; background-color: {status_box_bg}; margin-bottom: 0.25rem;">
-            <p style="font-size: 0.68rem; color: #A89A9A; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.4rem; margin-top: 0;">STATUS SISTEM</p>
-            <div style="display: flex; align-items: center; gap: 0.6rem;">
-                <div style="width: 7px; height: 7px; border-radius: 50%; background: #933B5B; box-shadow: 0 0 6px #933B5B;"></div>
-                <span style="font-size: 0.9rem; color: {'#EAE3E3' if st.session_state['dark_mode'] else '#3D2F2F'}; font-weight: 600;">CNN Model Active</span>
+        <div style="position: sticky; bottom: 0; padding-top: 1rem;">
+            <div style="padding: 1.2rem; border: 1px solid {status_box_border}; border-radius: 16px; background-color: {status_box_bg}; margin-bottom: 0.5rem;">
+                <p style="font-size: 0.68rem; color: #A89A9A; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.4rem; margin-top: 0;">STATUS SISTEM</p>
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <div style="width: 7px; height: 7px; border-radius: 50%; background: #933B5B; box-shadow: 0 0 6px #933B5B;"></div>
+                    <span style="font-size: 0.9rem; color: {'#EAE3E3' if st.session_state['dark_mode'] else '#3D2F2F'}; font-weight: 600;">CNN Model Active</span>
+                </div>
             </div>
         </div>
     """, unsafe_allow_html=True)
-    
-    # Row Kontrol Dark Mode
+
     col_lbl, col_sw = st.columns([3, 1])
     with col_lbl:
         st.markdown("""
