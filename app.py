@@ -106,7 +106,7 @@ def load_custom_style():
         }}
         
         section[data-testid='stSidebar'] div.stVerticalBlockInsidePage {{
-            height: calc(100vh - 4rem) !important;
+            height: calc(100vh - 3.5rem) !important;
             display: flex !important;
             flex-direction: column !important;
             justify-content: space-between !important;
@@ -369,8 +369,14 @@ if "total_tests" not in st.session_state:
 index_halaman = list_halaman.index(st.session_state["page"])
 
 with st.sidebar:
-    # --- CONTAINER ATAS ---
+    with st.sidebar:
     st.markdown("<div>", unsafe_allow_html=True)
+
+    try:
+        st.image("logo_kemova.png", use_container_width=True)
+    except:
+        pass
+
     st.markdown('<div class="sidebar-brand-name">KEMOVA</div>', unsafe_allow_html=True)
 
     page = st.radio(
