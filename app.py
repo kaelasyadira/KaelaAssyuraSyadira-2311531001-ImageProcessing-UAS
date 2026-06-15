@@ -766,16 +766,7 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                 # Tombol salin teks ditaruh di dalam popover juga biar rapi
                 if st.button("📋 Salin Teks Hasil Deteksi", use_container_width=True):
                     st.code(share_text, language="text")
-            # =============================================================================
-                
-                st.write("") 
-                if st.button("📋 Salin Teks ke Clipboard", use_container_width=True):
-                    st.code(share_text, language="text")
-            
-            if st.button("📋 SALIN TEKS HASIL DETEKSI", use_container_width=True):
-                # Trik menggunakan st.code agar user bisa menyalin teks dengan sekali klik di pojok kanan boks
-                st.info("Klik ikon salin di pojok kanan boks di bawah ini untuk menyalin teks:")
-                st.code(share_text, language="text")
+          
     
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button("📊 LIHAT ANALISIS PERFORMA →", key="btn_to_dashboard"):
