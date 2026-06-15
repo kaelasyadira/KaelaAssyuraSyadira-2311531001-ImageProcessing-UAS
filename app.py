@@ -694,22 +694,17 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                 mime="image/jpeg",
                 use_container_width=True
             )
-            
-            # ==================== FITUR POP-OVER SHARE TUNGGAL KEMOVA ====================
             st.markdown("<br>", unsafe_allow_html=True)
             
-            # Menyiapkan teks template untuk dibagikan
             share_text = f"Hai! Aku baru saja menguji ekspresi wajah menggunakan *KEMOVA - AI Emotion Detection*. Hasilnya, emosiku terdeteksi sebagai *{best_emotion}* dengan tingkat keyakinan {best_confidence:.2f}%! Coba uji ekspresimu juga yuk! 🔮✨"
             
             import urllib.parse
             encoded_text = urllib.parse.quote(share_text)
             
-            # Link URL untuk masing-masing media sosial
             whatsapp_url = f"https://api.whatsapp.com/send?text={encoded_text}"
             telegram_url = f"https://t.me/share/url?url=https://kemova-emotion-detection.streamlit.app&text={encoded_text}"
             twitter_url = f"https://twitter.com/intent/tweet?text={encoded_text}"
 
-            # DISINI KUNCINYA: Membuat satu tombol tunggal bertuliskan "BAGIKAN HASIL"
             with st.popover("📢 BAGIKAN HASIL EKSPRESI", use_container_width=True):
                 st.markdown("""
                     <p style='font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:12px; text-align:center;'>
@@ -717,7 +712,6 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                     </p>
                 """, unsafe_allow_html=True)
                 
-                # Desain menu pilihan di dalam popover saat tombol utama diklik
                 st.markdown(f"""
                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
                     <style>
@@ -761,35 +755,29 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                     </div>
                 """, unsafe_allow_html=True)
                 
-                st.write("") # Jeda jarak aman
+                st.write("") 
                 
-                # Ganti ini:
-if st.button("📋 Salin Teks Hasil Deteksi", use_container_width=True):
-    st.code(share_text, language="text")
-
-# Jadi ini:
-share_text_js = share_text.replace("`", "").replace("\n", "\\n").replace("'", "\\'")
-st.markdown(f"""
-    <button onclick="
-        navigator.clipboard.writeText('{share_text_js}');
-        this.innerText='✅ Tersalin!';
-        setTimeout(()=>this.innerText='📋 Salin Teks Hasil Deteksi', 2000);
-    " style="
-        width:100%;
-        background:transparent;
-        color:#A03F63;
-        border:2px solid #A03F63;
-        border-radius:10px;
-        padding:10px;
-        font-size:13px;
-        font-weight:700;
-        cursor:pointer;
-        transition:all 0.15s;
-    ">
-        📋 Salin Teks Hasil Deteksi
-    </button>
-""", unsafe_allow_html=True)
-          
+                share_text_js = share_text.replace("`", "").replace("\n", "\\n").replace("'", "\\'")
+                st.markdown(f"""
+                    <button onclick="
+                        navigator.clipboard.writeText('{share_text_js}');
+                        this.innerText='✅ Tersalin!';
+                        setTimeout(()=>this.innerText='📋 Salin Teks Hasil Deteksi', 2000);
+                    " style="
+                        width:100%;
+                        background:transparent;
+                        color:#A03F63;
+                        border:2px solid #A03F63;
+                        border-radius:10px;
+                        padding:10px;
+                        font-size:13px;
+                        font-weight:700;
+                        cursor:pointer;
+                        transition:all 0.15s;
+                    ">
+                        📋 Salin Teks Hasil Deteksi
+                    </button>
+                """, unsafe_allow_html=True)
     
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button("📊 LIHAT ANALISIS PERFORMA →", key="btn_to_dashboard"):
