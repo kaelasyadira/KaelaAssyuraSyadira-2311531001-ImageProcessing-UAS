@@ -762,14 +762,13 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                 
                 st.write("") # Spacer kecil
                 
-                # Menggunakan st.text_area bawaan streamlit agar aman dari error javascript
                 st.text_area(
                     "📋 SALIN TEKS HASIL DETEKSI", 
                     value=share_text, 
                     height=100, 
-                    label_visibility="collapsed"
+                    label_visibility="collapsed",
+                    disabled=True
                 )
-                st.caption("Tip: Klik ikon salin di pojok kanan atas kotak teks di atas untuk menyalin.")
     
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button("📊 LIHAT ANALISIS PERFORMA →", key="btn_to_dashboard"):
