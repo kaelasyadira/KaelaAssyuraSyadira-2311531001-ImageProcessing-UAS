@@ -696,6 +696,7 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
             )
 
             import urllib.parse
+            import streamlit.components.v1 as components
             
             st.markdown("<br>", unsafe_allow_html=True)
             
@@ -705,80 +706,74 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
             if st.session_state.get("show_share", False):
                 share_text = (
                     f"🔮 KEMOVA – AI Emotion Detection\n\n"
-                    f"Emosi terdeteksi: *{best_emotion}* ({best_confidence:.1f}%)\n"
-                    f"Coba sendiri di: kemova.streamlit.app\n\n"
+                    f"Emosi terdeteksi: {best_emotion} ({best_confidence:.1f}%)\n"
+                    f"Coba sendiri di: kemova-emotion-detection.streamlit.app\n\n"
                     f"#KEMOVA #EmotionAI #UniversitasAndalas"
                 )
                 share_text_js = share_text.replace("`", "").replace("\n", "\\n")
+                share_text_encoded = urllib.parse.quote(share_text)
             
-                wa_url    = f"https://wa.me/?text={urllib.parse.quote(share_text)}"
-                tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(share_text)}"
-                tg_url    = f"https://t.me/share/url?url=kemova.streamlit.app&text={urllib.parse.quote(share_text)}"
+                wa_url    = "https://wa.me/?text=" + share_text_encoded
+                tweet_url = "https://twitter.com/intent/tweet?text=" + share_text_encoded
+                tg_url    = "https://t.me/share/url?url=kemova-emotion-detection.streamlit.app&text=" + share_text_encoded
             
-                st.markdown(f"""
-                    <div style="
-                        background: var(--bg-section);
-                        border: 1px solid var(--border-soft);
-                        border-radius: 20px;
-                        padding: 1.5rem;
-                        margin-top: 0.75rem;
-                        animation: fadeIn 0.2s ease;
-                    ">
-                        <p style="font-size:0.75rem; font-weight:700; text-transform:uppercase;
-                            color:var(--text-dark); margin:0 0 1rem 0; letter-spacing:0.08em;">
-                            Bagikan ke...
-                        </p>
-                        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:0.75rem;">
+                components.html(f"""
+                <div style="
+                    background: #EFE2D6;
+                    border: 1px solid #DCCDBF;
+                    border-radius: 20px;
+                    padding: 1.5rem;
+                    margin-top: 0.5rem;
+                    font-family: 'Manrope', sans-serif;
+                ">
+                    <p style="font-size:0.75rem; font-weight:700; text-transform:uppercase;
+                        color:#3D2F2F; margin:0 0 1rem 0; letter-spacing:0.08em;">
+                        Bagikan ke...
+                    </p>
+                    <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:0.75rem;">
             
-                            <a href="{wa_url}" target="_blank" style="text-decoration:none;">
-                                <div style="background:#25D366; border-radius:16px; padding:1rem 0.5rem;
-                                    text-align:center; cursor:pointer; transition:opacity 0.2s;"
-                                    onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-                                    <div style="font-size:1.6rem;">💬</div>
-                                    <div style="font-size:0.72rem; font-weight:700; color:#fff; margin-top:0.4rem;">WhatsApp</div>
-                                </div>
-                            </a>
-            
-                            <a href="{tweet_url}" target="_blank" style="text-decoration:none;">
-                                <div style="background:#000000; border-radius:16px; padding:1rem 0.5rem;
-                                    text-align:center; cursor:pointer; transition:opacity 0.2s;"
-                                    onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-                                    <div style="font-size:1.6rem;">𝕏</div>
-                                    <div style="font-size:0.72rem; font-weight:700; color:#fff; margin-top:0.4rem;">Twitter / X</div>
-                                </div>
-                            </a>
-            
-                            <a href="{tg_url}" target="_blank" style="text-decoration:none;">
-                                <div style="background:#229ED9; border-radius:16px; padding:1rem 0.5rem;
-                                    text-align:center; cursor:pointer; transition:opacity 0.2s;"
-                                    onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-                                    <div style="font-size:1.6rem;">✈️</div>
-                                    <div style="font-size:0.72rem; font-weight:700; color:#fff; margin-top:0.4rem;">Telegram</div>
-                                </div>
-                            </a>
-            
-                            <div onclick="
-                                navigator.clipboard.writeText('{share_text_js}');
-                                this.querySelector('.cp-label').innerText='Tersalin!';
-                                setTimeout(()=>this.querySelector('.cp-label').innerText='Salin Teks', 2000);
-                            " style="background:var(--chalk); border-radius:16px; padding:1rem 0.5rem;
+                        <a href="{wa_url}" target="_blank" style="text-decoration:none;">
+                            <div style="background:#25D366; border-radius:16px; padding:1rem 0.5rem;
                                 text-align:center; cursor:pointer; transition:opacity 0.2s;"
-                                onmouseover="this.style.opacity='0.75'" onmouseout="this.style.opacity='1'">
-                                <div style="font-size:1.6rem;">📋</div>
-                                <div class="cp-label" style="font-size:0.72rem; font-weight:700;
-                                    color:var(--text-dark); margin-top:0.4rem;">Salin Teks</div>
+                                onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                                <div style="font-size:1.6rem;">💬</div>
+                                <div style="font-size:0.72rem; font-weight:700; color:#fff; margin-top:0.4rem;">WhatsApp</div>
                             </div>
+                        </a>
             
+                        <a href="{tweet_url}" target="_blank" style="text-decoration:none;">
+                            <div style="background:#000000; border-radius:16px; padding:1rem 0.5rem;
+                                text-align:center; cursor:pointer; transition:opacity 0.2s;"
+                                onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                                <div style="font-size:1.6rem;">𝕏</div>
+                                <div style="font-size:0.72rem; font-weight:700; color:#fff; margin-top:0.4rem;">Twitter / X</div>
+                            </div>
+                        </a>
+            
+                        <a href="{tg_url}" target="_blank" style="text-decoration:none;">
+                            <div style="background:#229ED9; border-radius:16px; padding:1rem 0.5rem;
+                                text-align:center; cursor:pointer; transition:opacity 0.2s;"
+                                onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                                <div style="font-size:1.6rem;">✈️</div>
+                                <div style="font-size:0.72rem; font-weight:700; color:#fff; margin-top:0.4rem;">Telegram</div>
+                            </div>
+                        </a>
+            
+                        <div onclick="
+                            navigator.clipboard.writeText('{share_text_js}');
+                            this.querySelector('.cp-label').innerText='Tersalin!';
+                            setTimeout(()=>this.querySelector('.cp-label').innerText='Salin Teks', 2000);
+                        " style="background:#E3D6BF; border-radius:16px; padding:1rem 0.5rem;
+                            text-align:center; cursor:pointer; transition:opacity 0.2s;"
+                            onmouseover="this.style.opacity='0.75'" onmouseout="this.style.opacity='1'">
+                            <div style="font-size:1.6rem;">📋</div>
+                            <div class="cp-label" style="font-size:0.72rem; font-weight:700;
+                                color:#3D2F2F; margin-top:0.4rem;">Salin Teks</div>
                         </div>
-                    </div>
             
-                    <style>
-                    @keyframes fadeIn {{
-                        from {{ opacity: 0; transform: translateY(-6px); }}
-                        to   {{ opacity: 1; transform: translateY(0); }}
-                    }}
-                    </style>
-                """, unsafe_allow_html=True)
+                    </div>
+                </div>
+                """, height=160)
     
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button("📊 LIHAT ANALISIS PERFORMA →", key="btn_to_dashboard"):
