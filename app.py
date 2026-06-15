@@ -763,9 +763,32 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                 
                 st.write("") # Jeda jarak aman
                 
-                # Tombol salin teks ditaruh di dalam popover juga biar rapi
-                if st.button("📋 Salin Teks Hasil Deteksi", use_container_width=True):
-                    st.code(share_text, language="text")
+                # Ganti ini:
+if st.button("📋 Salin Teks Hasil Deteksi", use_container_width=True):
+    st.code(share_text, language="text")
+
+# Jadi ini:
+share_text_js = share_text.replace("`", "").replace("\n", "\\n").replace("'", "\\'")
+st.markdown(f"""
+    <button onclick="
+        navigator.clipboard.writeText('{share_text_js}');
+        this.innerText='✅ Tersalin!';
+        setTimeout(()=>this.innerText='📋 Salin Teks Hasil Deteksi', 2000);
+    " style="
+        width:100%;
+        background:transparent;
+        color:#A03F63;
+        border:2px solid #A03F63;
+        border-radius:10px;
+        padding:10px;
+        font-size:13px;
+        font-weight:700;
+        cursor:pointer;
+        transition:all 0.15s;
+    ">
+        📋 Salin Teks Hasil Deteksi
+    </button>
+""", unsafe_allow_html=True)
           
     
             st.markdown("<br>", unsafe_allow_html=True)
