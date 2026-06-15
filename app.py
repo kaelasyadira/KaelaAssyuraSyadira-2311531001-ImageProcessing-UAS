@@ -695,20 +695,22 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                 use_container_width=True
             )
 
+            import urllib.parse
+            
             st.markdown("<br>", unsafe_allow_html=True)
             
             if st.button("📤 BAGIKAN HASIL DETEKSI", key="btn_share", use_container_width=True):
                 st.session_state["show_share"] = not st.session_state.get("show_share", False)
             
             if st.session_state.get("show_share", False):
-                import urllib.parse
-                
                 share_text = (
                     f"🔮 KEMOVA – AI Emotion Detection\n\n"
                     f"Emosi terdeteksi: *{best_emotion}* ({best_confidence:.1f}%)\n"
                     f"Coba sendiri di: kemova.streamlit.app\n\n"
                     f"#KEMOVA #EmotionAI #UniversitasAndalas"
                 )
+                share_text_js = share_text.replace("`", "").replace("\n", "\\n")
+            
                 wa_url    = f"https://wa.me/?text={urllib.parse.quote(share_text)}"
                 tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(share_text)}"
                 tg_url    = f"https://t.me/share/url?url=kemova.streamlit.app&text={urllib.parse.quote(share_text)}"
@@ -727,7 +729,7 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                             Bagikan ke...
                         </p>
                         <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:0.75rem;">
-                            
+            
                             <a href="{wa_url}" target="_blank" style="text-decoration:none;">
                                 <div style="background:#25D366; border-radius:16px; padding:1rem 0.5rem;
                                     text-align:center; cursor:pointer; transition:opacity 0.2s;"
@@ -756,7 +758,7 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                             </a>
             
                             <div onclick="
-                                navigator.clipboard.writeText(`{share_text.replace(chr(96), '').replace(chr(10), r'\n')}`);
+                                navigator.clipboard.writeText('{share_text_js}');
                                 this.querySelector('.cp-label').innerText='Tersalin!';
                                 setTimeout(()=>this.querySelector('.cp-label').innerText='Salin Teks', 2000);
                             " style="background:var(--chalk); border-radius:16px; padding:1rem 0.5rem;
