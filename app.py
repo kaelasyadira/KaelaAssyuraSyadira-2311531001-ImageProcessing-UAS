@@ -695,85 +695,72 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                 use_container_width=True
             )
 
-            import urllib.parse
-            import streamlit.components.v1 as components
-            
             st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown('<p style="font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:0.75rem; color:var(--text-dark);">📢 Bagikan Hasil Ekspresimu</p>', unsafe_allow_html=True)
             
-            if st.button("📤 BAGIKAN HASIL DETEKSI", key="btn_share", use_container_width=True):
-                st.session_state["show_share"] = not st.session_state.get("show_share", False)
+            share_text = f"Hai! Aku baru saja menguji ekspresi wajah menggunakan *KEMOVA - AI Emotion Detection*. Hasilnya, emosiku terdeteksi sebagai *{best_emotion}* dengan tingkat keyakinan {best_confidence:.2f}%! Coba uji ekspresimu juga yuk! 🔮✨"
             
-            if st.session_state.get("show_share", False):
-                share_text = (
-                    f"🔮 KEMOVA – AI Emotion Detection\n\n"
-                    f"Emosi terdeteksi: {best_emotion} ({best_confidence:.1f}%)\n"
-                    f"Coba sendiri di: kemova-emotion-detection.streamlit.app\n\n"
-                    f"#KEMOVA #EmotionAI #UniversitasAndalas"
-                )
-                share_text_js = share_text.replace("`", "").replace("\n", "\\n")
-                share_text_encoded = urllib.parse.quote(share_text)
+            import urllib.parse
+            encoded_text = urllib.parse.quote(share_text)
             
-                wa_url    = "https://wa.me/?text=" + share_text_encoded
-                tweet_url = "https://twitter.com/intent/tweet?text=" + share_text_encoded
-                tg_url    = "https://t.me/share/url?url=kemova-emotion-detection.streamlit.app&text=" + share_text_encoded
+            whatsapp_url = f"https://api.whatsapp.com/send?text={encoded_text}"
+            telegram_url = f"https://t.me/share/url?url=https://kemova-ai.com&text={encoded_text}" # Ganti dengan link web apps kamu jika ada
             
-                components.html(f"""
-                <div style="
-                    background: #EFE2D6;
-                    border: 1px solid #DCCDBF;
-                    border-radius: 20px;
-                    padding: 1.5rem;
-                    margin-top: 0.5rem;
-                    font-family: 'Manrope', sans-serif;
-                ">
-                    <p style="font-size:0.75rem; font-weight:700; text-transform:uppercase;
-                        color:#3D2F2F; margin:0 0 1rem 0; letter-spacing:0.08em;">
-                        Bagikan ke...
-                    </p>
-                    <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:0.75rem;">
-            
-                        <a href="{wa_url}" target="_blank" style="text-decoration:none;">
-                            <div style="background:#25D366; border-radius:16px; padding:1rem 0.5rem;
-                                text-align:center; cursor:pointer; transition:opacity 0.2s;"
-                                onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-                                <div style="font-size:1.6rem;">💬</div>
-                                <div style="font-size:0.72rem; font-weight:700; color:#fff; margin-top:0.4rem;">WhatsApp</div>
-                            </div>
-                        </a>
-            
-                        <a href="{tweet_url}" target="_blank" style="text-decoration:none;">
-                            <div style="background:#000000; border-radius:16px; padding:1rem 0.5rem;
-                                text-align:center; cursor:pointer; transition:opacity 0.2s;"
-                                onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-                                <div style="font-size:1.6rem;">𝕏</div>
-                                <div style="font-size:0.72rem; font-weight:700; color:#fff; margin-top:0.4rem;">Twitter / X</div>
-                            </div>
-                        </a>
-            
-                        <a href="{tg_url}" target="_blank" style="text-decoration:none;">
-                            <div style="background:#229ED9; border-radius:16px; padding:1rem 0.5rem;
-                                text-align:center; cursor:pointer; transition:opacity 0.2s;"
-                                onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-                                <div style="font-size:1.6rem;">✈️</div>
-                                <div style="font-size:0.72rem; font-weight:700; color:#fff; margin-top:0.4rem;">Telegram</div>
-                            </div>
-                        </a>
-            
-                        <div onclick="
-                            navigator.clipboard.writeText('{share_text_js}');
-                            this.querySelector('.cp-label').innerText='Tersalin!';
-                            setTimeout(()=>this.querySelector('.cp-label').innerText='Salin Teks', 2000);
-                        " style="background:#E3D6BF; border-radius:16px; padding:1rem 0.5rem;
-                            text-align:center; cursor:pointer; transition:opacity 0.2s;"
-                            onmouseover="this.style.opacity='0.75'" onmouseout="this.style.opacity='1'">
-                            <div style="font-size:1.6rem;">📋</div>
-                            <div class="cp-label" style="font-size:0.72rem; font-weight:700;
-                                color:#3D2F2F; margin-top:0.4rem;">Salin Teks</div>
-                        </div>
-            
-                    </div>
+            st.markdown(f"""
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+                
+                <style>
+                .share-container {{
+                    display: flex;
+                    gap: 10px;
+                    width: 100%;
+                }}
+                .share-btn {{
+                    flex: 1;
+                    text-align: center;
+                    padding: 12px 10px;
+                    border-radius: 10px;
+                    font-size: 13px;
+                    font-weight: 700;
+                    text-decoration: none !important;
+                    text-transform: uppercase;
+                    transition: all 0.2s ease-in-out;
+                    display: inline-block;
+                }}
+                .wa-btn {{
+                    background: transparent;
+                    color: #25D366;
+                    border: 2px solid #25D366;
+                }}
+                .wa-btn:hover {{
+                    background: #25D366;
+                    color: white !important;
+                }}
+                .tg-btn {{
+                    background: transparent;
+                    color: #26A5E4;
+                    border: 2px solid #26A5E4;
+                }}
+                .tg-btn:hover {{
+                    background: #26A5E4;
+                    color: white !important;
+                }}
+                </style>
+                
+                <div class="share-container">
+                    <a href="{whatsapp_url}" target="_blank" class="share-btn wa-btn">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="{telegram_url}" target="_blank" class="share-btn tg-btn">
+                        <i class="fab fa-telegram-plane"></i> Telegram
+                    </a>
                 </div>
-                """, height=160)
+            """, unsafe_allow_html=True)
+            
+            if st.button("📋 SALIN TEKS HASIL DETEKSI", use_container_width=True):
+                # Trik menggunakan st.code agar user bisa menyalin teks dengan sekali klik di pojok kanan boks
+                st.info("Klik ikon salin di pojok kanan boks di bawah ini untuk menyalin teks:")
+                st.code(share_text, language="text")
     
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button("📊 LIHAT ANALISIS PERFORMA →", key="btn_to_dashboard"):
