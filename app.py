@@ -694,9 +694,8 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                 mime="image/jpeg",
                 use_container_width=True
             )
-
+            
             st.markdown("<br>", unsafe_allow_html=True)
-            st.markdown('<p style="font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:0.75rem; color:var(--text-dark);">📢 Bagikan Hasil Ekspresimu</p>', unsafe_allow_html=True)
             
             share_text = f"Hai! Aku baru saja menguji ekspresi wajah menggunakan *KEMOVA - AI Emotion Detection*. Hasilnya, emosiku terdeteksi sebagai *{best_emotion}* dengan tingkat keyakinan {best_confidence:.2f}%! Coba uji ekspresimu juga yuk! 🔮✨"
             
@@ -704,58 +703,62 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
             encoded_text = urllib.parse.quote(share_text)
             
             whatsapp_url = f"https://api.whatsapp.com/send?text={encoded_text}"
-            telegram_url = f"https://t.me/share/url?url=https://kemova-ai.com&text={encoded_text}" # Ganti dengan link web apps kamu jika ada
-            
-            st.markdown(f"""
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+            telegram_url = f"https://t.me/share/url?url=https://kemova-ai.com&text={encoded_text}"
+            twitter_url = f"https://twitter.com/intent/tweet?text={encoded_text}"
+
+            with st.popover("🔗 BAGIKAN HASIL EKSPRESI", use_container_width=True):
+                st.markdown("""
+                    <p style='font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:10px; text-align:center;'>
+                        PILIH PLATFORM BERBAGI
+                    </p>
+                """, unsafe_allow_html=True)
                 
-                <style>
-                .share-container {{
-                    display: flex;
-                    gap: 10px;
-                    width: 100%;
-                }}
-                .share-btn {{
-                    flex: 1;
-                    text-align: center;
-                    padding: 12px 10px;
-                    border-radius: 10px;
-                    font-size: 13px;
-                    font-weight: 700;
-                    text-decoration: none !important;
-                    text-transform: uppercase;
-                    transition: all 0.2s ease-in-out;
-                    display: inline-block;
-                }}
-                .wa-btn {{
-                    background: transparent;
-                    color: #25D366;
-                    border: 2px solid #25D366;
-                }}
-                .wa-btn:hover {{
-                    background: #25D366;
-                    color: white !important;
-                }}
-                .tg-btn {{
-                    background: transparent;
-                    color: #26A5E4;
-                    border: 2px solid #26A5E4;
-                }}
-                .tg-btn:hover {{
-                    background: #26A5E4;
-                    color: white !important;
-                }}
-                </style>
+                st.markdown(f"""
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+                    <style>
+                    .pop-share-list {{
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+                    }}
+                    .pop-share-item {{
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        padding: 10px 15px;
+                        border-radius: 8px;
+                        font-size: 14px;
+                        font-weight: 600;
+                        text-decoration: none !important;
+                        transition: background 0.2s;
+                        color: var(--text-dark) !important;
+                        background: rgba(0,0,0,0.03);
+                    }}
+                    .pop-share-item:hover {{
+                        background: rgba(147, 59, 91, 0.08);
+                        color: var(--amaranth) !important;
+                    }}
+                    .icon-wa {{ color: #25D366; }}
+                    .icon-tg {{ color: #26A5E4; }}
+                    .icon-x {{ color: #000000; }}
+                    </style>
+                    
+                    <div class="pop-share-list">
+                        <a href="{whatsapp_url}" target="_blank" class="pop-share-item">
+                            <i class="fab fa-whatsapp icon-wa"></i> WhatsApp
+                        </a>
+                        <a href="{telegram_url}" target="_blank" class="pop-share-item">
+                            <i class="fab fa-telegram-plane icon-tg"></i> Telegram
+                        </a>
+                        <a href="{twitter_url}" target="_blank" class="pop-share-item">
+                            <i class="fab fa-twitter icon-x"></i> X / Twitter
+                        </a>
+                    </div>
+                """, unsafe_allow_html=True)
                 
-                <div class="share-container">
-                    <a href="{whatsapp_url}" target="_blank" class="share-btn wa-btn">
-                        <i class="fab fa-whatsapp"></i> WhatsApp
-                    </a>
-                    <a href="{telegram_url}" target="_blank" class="share-btn tg-btn">
-                        <i class="fab fa-telegram-plane"></i> Telegram
-                    </a>
-                </div>
-            """, unsafe_allow_html=True)
+                st.write("") 
+                if st.button("📋 Salin Teks ke Clipboard", use_container_width=True):
+                    st.code(share_text, language="text")
             
             if st.button("📋 SALIN TEKS HASIL DETEKSI", use_container_width=True):
                 # Trik menggunakan st.code agar user bisa menyalin teks dengan sekali klik di pojok kanan boks
