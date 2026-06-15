@@ -694,6 +694,36 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                 mime="image/jpeg",
                 use_container_width=True
             )
+            import urllib.parse
+            
+            share_text = (
+                f"🔮 KEMOVA – AI Emotion Detection\n\n"
+                f"Emosi terdeteksi: *{best_emotion}* ({best_confidence:.1f}%)\n"
+                f"Model: CNN | Dataset: FER + AffectNet\n\n"
+                f"#KEMOVA #EmotionAI #UniversitasAndalas"
+            )
+            
+            wa_url   = f"https://wa.me/?text={urllib.parse.quote(share_text)}"
+            tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(share_text)}"
+            
+            st.markdown("### 📤 Bagikan Hasil Deteksi")
+            col_wa, col_tw, col_cp = st.columns(3, gap="small")
+            
+            with col_wa:
+                st.link_button("💬 Share via WhatsApp", wa_url, use_container_width=True)
+            
+            with col_tw:
+                st.link_button("🐦 Share via Twitter/X", tweet_url, use_container_width=True)
+            
+            with col_cp:
+                st.markdown(f"""
+                    <button onclick="navigator.clipboard.writeText(`{share_text.replace('`', '')}`).then(()=>this.innerText='✅ Tersalin!')"
+                        style="width:100%; background:transparent; color:#A03F63; border:2px solid #A03F63;
+                        border-radius:10px; padding:18px 10px; font-size:14px; font-weight:700;
+                        text-transform:uppercase; cursor:pointer; transition:all 0.15s;">
+                        📋 SALIN TEKS
+                    </button>
+                """, unsafe_allow_html=True)
             
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button("📊 LIHAT ANALISIS PERFORMA →", key="btn_to_dashboard"):
