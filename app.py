@@ -757,7 +757,33 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                 
                 st.write("") 
                 
-                share_text_js = share_text.replace("`", "").replace("\n", "\\n").replace("'", "\\'")
+                # Trik Base64 biar teks aman dari bentrok tanda kutip/karakter aneh di JavaScript
+                import base64
+                share_text_bytes = share_text.encode('utf-8')
+                share_text_b64 = base64.b64encode(share_text_bytes).decode('utf-8')
+
+                st.markdown(f"""
+                    <button onclick="
+                        /* Decode teks dari Base64 ke string UTF-8 asli */
+                        let decodedText = decodeURIComponent(escape(atob('{share_text_b64}')));
+                        navigator.clipboard.writeText(decodedText);
+                        this.innerText='✅ Tersalin!';
+                        setTimeout(()=>this.innerText='📋 Salin Teks Hasil Deteksi', 2000);
+                    " style="
+                        width:100%;
+                        background:transparent;
+                        color:#A03F63;
+                        border:2px solid #A03F63;
+                        border-radius:10px;
+                        padding:10px;
+                        font-size:13px;
+                        font-weight:700;
+                        cursor:pointer;
+                        transition:all 0.15s;
+                    ">
+                        📋 Salin Teks Hasil Deteksi
+                    </button>
+                """, unsafe_allow_html=True)
                 st.markdown(f"""
                     <button onclick="
                         navigator.clipboard.writeText('{share_text_js}');
