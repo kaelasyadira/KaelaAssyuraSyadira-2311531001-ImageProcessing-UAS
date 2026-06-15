@@ -755,6 +755,83 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                     </div>
                 """, unsafe_allow_html=True)
                 
+                st.write("") # Spacer kecil
+                
+                # Menggunakan Base64 murni agar tidak ada lagi pemanggilan share_text_js yang bikin NameError
+                import base64
+                share_text_bytes = share_text.encode('utf-8')
+                share_text_b64 = base64.b64encode(share_text_bytes).decode('utf-8')
+
+                st.markdown(f"""
+                    <button onclick="
+                        let decodedText = decodeURIComponent(escape(atob('{share_text_b64}')));
+                        navigator.clipboard.writeText(decodedText);
+                        this.innerText='✅ Tersalin!';
+                        setTimeout(()=>this.innerText='📋 Salin Teks Hasil Deteksi', 2000);
+                    " style="
+                        width:100%;
+                        background:transparent;
+                        color:#A03F63;
+                        border:2px solid #A03F63;
+                        border-radius:10px;
+                        padding:10px;
+                        font-size:13px;
+                        font-weight:700;
+                        cursor:pointer;
+                        transition:all 0.15s;
+                    ">
+                        📋 Salin Teks Hasil Deteksi
+                    </button>
+                """, unsafe_allow_html=True)
+                st.markdown("""
+                    <p style='font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:12px; text-align:center;'>
+                        MAU DIKIRIM KE MANA?
+                    </p>
+                """, unsafe_allow_html=True)
+                
+                st.markdown(f"""
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+                    <style>
+                    .pop-share-list {{
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+                    }}
+                    .pop-share-item {{
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        padding: 10px 15px;
+                        border-radius: 8px;
+                        font-size: 14px;
+                        font-weight: 600;
+                        text-decoration: none !important;
+                        transition: background 0.2s;
+                        color: var(--text-dark) !important;
+                        background: rgba(0,0,0,0.03);
+                    }}
+                    .pop-share-item:hover {{
+                        background: rgba(147, 59, 91, 0.08);
+                        color: var(--amaranth) !important;
+                    }}
+                    .icon-wa {{ color: #25D366; }}
+                    .icon-tg {{ color: #26A5E4; }}
+                    .icon-x {{ color: #000000; }}
+                    </style>
+                    
+                    <div class="pop-share-list">
+                        <a href="{whatsapp_url}" target="_blank" class="pop-share-item">
+                            <i class="fab fa-whatsapp icon-wa"></i> WhatsApp
+                        </a>
+                        <a href="{telegram_url}" target="_blank" class="pop-share-item">
+                            <i class="fab fa-telegram-plane icon-tg"></i> Telegram
+                        </a>
+                        <a href="{twitter_url}" target="_blank" class="pop-share-item">
+                            <i class="fab fa-twitter icon-x"></i> X / Twitter
+                        </a>
+                    </div>
+                """, unsafe_allow_html=True)
+                
                 st.write("") 
                 
                 # Trik Base64 biar teks aman dari bentrok tanda kutip/karakter aneh di JavaScript
