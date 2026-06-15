@@ -696,11 +696,16 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
             )
             st.markdown("<br>", unsafe_allow_html=True)
             
+            # ==================== FITUR POP-OVER SHARE KEMOVA FIXED ====================
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            # Menyiapkan teks template untuk dibagikan
             share_text = f"Hai! Aku baru saja menguji ekspresi wajah menggunakan *KEMOVA - AI Emotion Detection*. Hasilnya, emosiku terdeteksi sebagai *{best_emotion}* dengan tingkat keyakinan {best_confidence:.2f}%! Coba uji ekspresimu juga yuk! 🔮✨"
             
             import urllib.parse
             encoded_text = urllib.parse.quote(share_text)
             
+            # Link URL untuk masing-masing media sosial
             whatsapp_url = f"https://api.whatsapp.com/send?text={encoded_text}"
             telegram_url = f"https://t.me/share/url?url=https://kemova-emotion-detection.streamlit.app&text={encoded_text}"
             twitter_url = f"https://twitter.com/intent/tweet?text={encoded_text}"
@@ -757,130 +762,14 @@ elif page == "🔮     Mulai Deteksi Ekspresi":
                 
                 st.write("") # Spacer kecil
                 
-                # Menggunakan Base64 murni agar tidak ada lagi pemanggilan share_text_js yang bikin NameError
-                import base64
-                share_text_bytes = share_text.encode('utf-8')
-                share_text_b64 = base64.b64encode(share_text_bytes).decode('utf-8')
-
-                st.markdown(f"""
-                    <button onclick="
-                        let decodedText = decodeURIComponent(escape(atob('{share_text_b64}')));
-                        navigator.clipboard.writeText(decodedText);
-                        this.innerText='✅ Tersalin!';
-                        setTimeout(()=>this.innerText='📋 Salin Teks Hasil Deteksi', 2000);
-                    " style="
-                        width:100%;
-                        background:transparent;
-                        color:#A03F63;
-                        border:2px solid #A03F63;
-                        border-radius:10px;
-                        padding:10px;
-                        font-size:13px;
-                        font-weight:700;
-                        cursor:pointer;
-                        transition:all 0.15s;
-                    ">
-                        📋 Salin Teks Hasil Deteksi
-                    </button>
-                """, unsafe_allow_html=True)
-                st.markdown("""
-                    <p style='font-size:0.8rem; font-weight:700; color:var(--text-dark); margin-bottom:12px; text-align:center;'>
-                        MAU DIKIRIM KE MANA?
-                    </p>
-                """, unsafe_allow_html=True)
-                
-                st.markdown(f"""
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-                    <style>
-                    .pop-share-list {{
-                        display: flex;
-                        flex-direction: column;
-                        gap: 8px;
-                    }}
-                    .pop-share-item {{
-                        display: flex;
-                        align-items: center;
-                        gap: 12px;
-                        padding: 10px 15px;
-                        border-radius: 8px;
-                        font-size: 14px;
-                        font-weight: 600;
-                        text-decoration: none !important;
-                        transition: background 0.2s;
-                        color: var(--text-dark) !important;
-                        background: rgba(0,0,0,0.03);
-                    }}
-                    .pop-share-item:hover {{
-                        background: rgba(147, 59, 91, 0.08);
-                        color: var(--amaranth) !important;
-                    }}
-                    .icon-wa {{ color: #25D366; }}
-                    .icon-tg {{ color: #26A5E4; }}
-                    .icon-x {{ color: #000000; }}
-                    </style>
-                    
-                    <div class="pop-share-list">
-                        <a href="{whatsapp_url}" target="_blank" class="pop-share-item">
-                            <i class="fab fa-whatsapp icon-wa"></i> WhatsApp
-                        </a>
-                        <a href="{telegram_url}" target="_blank" class="pop-share-item">
-                            <i class="fab fa-telegram-plane icon-tg"></i> Telegram
-                        </a>
-                        <a href="{twitter_url}" target="_blank" class="pop-share-item">
-                            <i class="fab fa-twitter icon-x"></i> X / Twitter
-                        </a>
-                    </div>
-                """, unsafe_allow_html=True)
-                
-                st.write("") 
-                
-                # Trik Base64 biar teks aman dari bentrok tanda kutip/karakter aneh di JavaScript
-                import base64
-                share_text_bytes = share_text.encode('utf-8')
-                share_text_b64 = base64.b64encode(share_text_bytes).decode('utf-8')
-
-                st.markdown(f"""
-                    <button onclick="
-                        /* Decode teks dari Base64 ke string UTF-8 asli */
-                        let decodedText = decodeURIComponent(escape(atob('{share_text_b64}')));
-                        navigator.clipboard.writeText(decodedText);
-                        this.innerText='✅ Tersalin!';
-                        setTimeout(()=>this.innerText='📋 Salin Teks Hasil Deteksi', 2000);
-                    " style="
-                        width:100%;
-                        background:transparent;
-                        color:#A03F63;
-                        border:2px solid #A03F63;
-                        border-radius:10px;
-                        padding:10px;
-                        font-size:13px;
-                        font-weight:700;
-                        cursor:pointer;
-                        transition:all 0.15s;
-                    ">
-                        📋 Salin Teks Hasil Deteksi
-                    </button>
-                """, unsafe_allow_html=True)
-                st.markdown(f"""
-                    <button onclick="
-                        navigator.clipboard.writeText('{share_text_js}');
-                        this.innerText='✅ Tersalin!';
-                        setTimeout(()=>this.innerText='📋 Salin Teks Hasil Deteksi', 2000);
-                    " style="
-                        width:100%;
-                        background:transparent;
-                        color:#A03F63;
-                        border:2px solid #A03F63;
-                        border-radius:10px;
-                        padding:10px;
-                        font-size:13px;
-                        font-weight:700;
-                        cursor:pointer;
-                        transition:all 0.15s;
-                    ">
-                        📋 Salin Teks Hasil Deteksi
-                    </button>
-                """, unsafe_allow_html=True)
+                # Menggunakan st.text_area bawaan streamlit agar aman dari error javascript
+                st.text_area(
+                    "📋 SALIN TEKS HASIL DETEKSI", 
+                    value=share_text, 
+                    height=100, 
+                    label_visibility="collapsed"
+                )
+                st.caption("Tip: Klik ikon salin di pojok kanan atas kotak teks di atas untuk menyalin.")
     
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button("📊 LIHAT ANALISIS PERFORMA →", key="btn_to_dashboard"):
